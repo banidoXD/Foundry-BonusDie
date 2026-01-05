@@ -21,7 +21,7 @@
     },
     "esmodules": [
         "scripts/Hooks.js",
-        "scripts/main.js"
+        "scripts/BonusDice.js"
     ],
     "styles": [
         "styles/BonusDice.css"

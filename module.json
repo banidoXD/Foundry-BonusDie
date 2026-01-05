@@ -1,6 +1,6 @@
 {
-    "id": "BonusDie",
-    "title": "Bonus Die",
+    "id": "BonusDieF",
+    "title": "Bonus Die Fork",
     "description": "This module offers the option for the GM to give their players a number of 'Bonus Dice' that can be expended or gifted to other players",
     "authors": [
         {

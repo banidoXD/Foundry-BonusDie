@@ -1,12 +1,6 @@
 import {getCounter, getSetting, setCounter} from "./Settings.js"
 import {createNewMessage} from "./MessageHandle.js";
 
-// ... (Mantenha todas as funções auxiliares: createWarning, getJQueryObjectFromId, etc. até chegar na handle) ...
-// SE PREFERIR, PODE COPIAR O ARQUIVO INTEIRO ABAIXO QUE JÁ CONTÉM TUDO:
-
-/* -------------------------------------------------------------------------- */
-/* COLE ISTO SUBSTITUINDO O ARQUIVO INTEIRO PARA GARANTIR QUE NADA FALTE */
-/* -------------------------------------------------------------------------- */
 
 const createWarning = (checkSource, type) => {
     if (checkSource === game.user._id) ui.notifications.warn(getSetting(type));
@@ -139,9 +133,6 @@ const getControlsForSingleUser = (user) => {
     }
 }
 
-/**
- * Handle principal - Atualizado para aceitar tanto Elemento HTML quanto jQuery
- */
 const handle = (players) => (index, playerHTML) => {
     // Garante jQuery
     const $playerLi = $(playerHTML);

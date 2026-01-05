@@ -1,38 +1,27 @@
 import {getCounter, getSetting, setCounter} from "./Settings.js"
 import {createNewMessage} from "./MessageHandle.js";
 
-/**
- * Creates a warning to a target player
- *
- * @param checkSource - the target of the warning
- * @param type - details of the warning
- */
+// ... (Mantenha todas as funções auxiliares: createWarning, getJQueryObjectFromId, etc. até chegar na handle) ...
+// SE PREFERIR, PODE COPIAR O ARQUIVO INTEIRO ABAIXO QUE JÁ CONTÉM TUDO:
+
+/* -------------------------------------------------------------------------- */
+/* COLE ISTO SUBSTITUINDO O ARQUIVO INTEIRO PARA GARANTIR QUE NADA FALTE */
+/* -------------------------------------------------------------------------- */
+
 const createWarning = (checkSource, type) => {
     if (checkSource === game.user._id) ui.notifications.warn(getSetting(type));
 }
 
-/**
- * Returns the id of the span that holds a player's bonus die number
- *
- * @param id - player id
- */
 const getJQueryObjectFromId = (id) => $(`#BonusDie-${id}`);
 
-/**
- * Updates the counter display
- *
- * @param counter - jQuery element of the span to update
- * @param newValue - the new value of the span
- */
-const updateCounter = (counter, newValue) => counter.forEach((entity) => getJQueryObjectFromId(entity).text(newValue[entity]))
+const updateCounter = (counter, newValue) => {
+    if (Array.isArray(counter)) {
+        counter.forEach((entity) => getJQueryObjectFromId(entity).text(newValue[entity]));
+    } else {
+         Object.keys(newValue).forEach(key => getJQueryObjectFromId(key).text(newValue[key]));
+    }
+}
 
-/**
- * Returns true if a counter should be modified and false + reason if not
- *
- * @param counter - list of all the bonus dice of all the players
- * @param players - a list of players involved in the modification
- * @param modifiers - the modifiers applied to the counter
- */
 const createShouldModifyObject = (counter, players, modifiers) => {
     let returnValue = true;
     let reason = 'nothing';
@@ -47,18 +36,9 @@ const createShouldModifyObject = (counter, players, modifiers) => {
             reason = 'onOverLimit';
         }
     })
-    return {
-        state: returnValue,
-        reason: reason
-    };
+    return { state: returnValue, reason: reason };
 }
 
-/**
- * Creates warning to the owner of the modifications
- *
- * @param source - owner of the modifications
- * @param modify - shouldModify object
- */
 const warnings = (source, modify) => {
     if (!source) return ui.notifications.warn(getSetting(modify.reason));
     game.socket.emit('module.BonusDie', {
@@ -71,13 +51,6 @@ const warnings = (source, modify) => {
 const createMessageOnModification = async (context, players) =>
     context === 'gift' ? await createNewMessage(context, players[1], players[0]) : await createNewMessage(context, players[0])
 
-/**
- * Modifies the structure of the counter
- *
- * @param players - list of players involved in the modification
- * @param counter - the entire counter
- * @param modifiers - the modifications done by each player
- */
 const modifyCounter = (players, counter, modifiers) => {
     players.forEach((pl, index) => {
         if (isNaN(counter[pl])) counter[pl] = 0;
@@ -86,12 +59,6 @@ const modifyCounter = (players, counter, modifiers) => {
     return counter;
 }
 
-/**
- * Update the counter in the settings and emits the message for the players to update their counters
- *
- * @param counter - all saved data
- * @param players - a list of players whose numbers should be modified
- */
 const updateCounterAndDisplay = (counter, players) => {
     setCounter(counter).then(() => {
         updateCounter(players, counter);
@@ -103,37 +70,16 @@ const updateCounterAndDisplay = (counter, players) => {
     });
 }
 
-/**
- * Method called by the buttons to update the numbers displayed
- *
- * @param players - owner of the bonus die
- * @param modifiers - how should the number of bonus die be modified (+/-)
- * @param context - what message should be created
- * @param source - who called the modification
- */
 const modifyBonusDieAmountGM = async (players, modifiers, context, source) => {
     if (!game.user.isGM) return;
-
     let counter = getCounter();
-
     const modify = createShouldModifyObject(counter, players, modifiers);
     if (!modify.state) return warnings(source, modify);
-
     await createMessageOnModification(context, players);
     counter = modifyCounter(players, counter, modifiers);
-
     updateCounterAndDisplay(counter, players);
 }
 
-/**
- * Method intended for calling modify Die Amount from the player's side,
- * it emits a socket that will be answered by the GM side of the method
- *
- * @param player - player calling the method
- * @param modifier - +1/-1
- * @param context
- * @param source
- */
 const modifyBonusDieAmountPlayer = async (player, modifier, context, source) => {
     await game.socket.emit('module.BonusDie', {
         action: 'requestCounterUpdate',
@@ -144,101 +90,80 @@ const modifyBonusDieAmountPlayer = async (player, modifier, context, source) => 
     })
 }
 
-/**
- * Selects if the method above should add or subtract from the counter
- *
- * @param type - increase/decrease
- * @param player - owner of the structure
- */
-const methodSelector = (type, player) => async () => {
+const methodSelector = (type, player) => async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     switch (type) {
-        case 'increase':
-            return modifyBonusDieAmountGM([player], [1], 'increase');
-        case 'decrease':
-            return modifyBonusDieAmountGM([player], [-1], 'decrease');
-        case 'use':
-            return await modifyBonusDieAmountPlayer([player], [-1], 'use', player);
-        case 'gift':
-            return await modifyBonusDieAmountPlayer([player, game.user._id], [1, -1], 'gift', game.user._id);
+        case 'increase': return modifyBonusDieAmountGM([player], [1], 'increase');
+        case 'decrease': return modifyBonusDieAmountGM([player], [-1], 'decrease');
+        case 'use': return await modifyBonusDieAmountPlayer([player], [-1], 'use', player);
+        case 'gift': return await modifyBonusDieAmountPlayer([player, game.user._id], [1, -1], 'gift', game.user._id);
     }
 }
 
 const iconSelector = (type) => `fas ${type === 'increase' ? 'fa-plus' : type === 'decrease' ? 'fa-minus' : type === 'use' ? 'fa-dice-d20' : 'fa-gift'}`;
 
-/**
- * Creates the structure for the button
- *
- * @param player - owner of the data
- */
 const button = (player) => (type) => {
     const iconType = iconSelector(type);
-    let createdButton = $(`<span><i class='${iconType}'></i></span>`);
+    let createdButton = $(`<a class="bonus-die-btn" title="${type}"><i class="${iconType}"></i></a>`);
     createdButton.on('click', methodSelector(type, player));
     return createdButton;
 }
 
-/**
- * Returns the number of bonus die held by a player
- *
- * @param player
- */
 const getBonusDieValue = (player) => {
     const counter = getCounter();
-    if (counter?.[player]) {
-        return counter[player];
-    } else return 0;
+    if (counter?.[player]) return counter[player];
+    else return 0;
 }
 
-/**
- * Returns a unique identifier for each span
- *
- * @param index - index of the span
- */
 const getSpanId = (index) => `BonusDie-${index}`;
 
-/**
- * Creates the structure for the bonus die display as a span with the number of bonus die
- *
- * @param player - the player owner of the structure
- */
-const bonusDieStructure = (player) => $(`<span id="${getSpanId(player)}">${getBonusDieValue(player)}</i></span>`);
+const bonusDieStructure = (player) => $(`<span class="bonus-die-count" id="${getSpanId(player)}" style="margin: 0 5px; font-weight: bold;">${getBonusDieValue(player)}</span>`);
 
-/**
- * Creates the controls structure for the DM (display, plus button, minus button)
- *
- * @param players - player that has it's data controlled
- * @param index - index of the span
- */
-const getControls = (players, index) => {
-    const playerId = players.users[index]._id;
+const getControlsForSingleUser = (user) => {
+    const playerId = user.id;
     const $bonusDie = bonusDieStructure(playerId);
     const buttonWithPlayer = button(playerId);
 
     if (game.user.isGM) {
         const buttonPlus = buttonWithPlayer('increase');
         const buttonMinus = buttonWithPlayer('decrease');
-
-        if (players.users[index].isGM) return [''];
-        else return [$bonusDie, buttonPlus, buttonMinus];
+        // REMOVA A LINHA ABAIXO SE QUISER VER OS BOTOES SENDO GM NO SEU PROPRIO NOME
+        // if (user.isGM) return []; 
+        return [$bonusDie, buttonPlus, buttonMinus];
     } else {
         const buttonUse = game.user._id === playerId ? buttonWithPlayer('use') : '';
         const buttonGift = game.user._id !== playerId ? buttonWithPlayer('gift') : '';
-
-        if (players.users[index].isGM) return [''];
-        else return [$bonusDie, buttonUse, buttonGift];
+        if (user.isGM) return [];
+        return [$bonusDie, buttonUse, buttonGift];
     }
 }
 
 /**
- * Appends the controls to the players display
- *
- * @param players - a list of players
+ * Handle principal - Atualizado para aceitar tanto Elemento HTML quanto jQuery
  */
 const handle = (players) => (index, playerHTML) => {
-    const $container = $('<div class="BonusDie-button-container"></div>')
-    $container.append(...getControls(players, index));
-    return $(playerHTML).append($container);
+    // Garante jQuery
+    const $playerLi = $(playerHTML);
+    
+    // Verifica duplicidade mais uma vez por segurança
+    if ($playerLi.find('.BonusDie-button-container').length > 0) return;
+
+    // Pega o ID
+    const userId = $playerLi.data("user-id") || $playerLi.attr("data-user-id");
+    if (!userId) return;
+
+    const user = game.users.get(userId);
+    if (!user) return;
+
+    const $container = $('<div class="BonusDie-button-container flexrow" style="flex: 0 0 auto; justify-content: flex-end; gap: 3px; font-size: 0.9em;"></div>');
+    
+    const controls = getControlsForSingleUser(user);
+    
+    if (controls.length > 0) {
+        $container.append(...controls);
+        $playerLi.append($container);
+    }
 }
 
 export {handle, updateCounter, modifyBonusDieAmountGM, createWarning}
-

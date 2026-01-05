@@ -11,6 +11,19 @@ const SETTINGS = [
             restricted: false,
         },
     },
+    // --- NOVA CONFIGURAÇÃO: FÓRMULA DO DADO ---
+    {
+        key: "dieFormula",
+        data: {
+            name: "Fórmula do Dado Bônus",
+            hint: "Qual dado será rolado ao usar? (Ex: 1d6, 1d8, 1d20 + 2)",
+            type: String,
+            default: "1d6",
+            scope: "world",
+            config: true,
+            restricted: true,
+        }
+    },
     {
         key: "maxNrOfBonusDice",
         data: {
@@ -46,12 +59,35 @@ const SETTINGS = [
             restricted: true,
         }
     },
+    // --- NOVOS TOGGLES PARA MENSAGENS ---
+    {
+        key: "showMsgIncrease",
+        data: {
+            name: "Mostrar mensagem ao GANHAR dado?",
+            type: Boolean,
+            default: true,
+            scope: "world",
+            config: true,
+            restricted: true,
+        }
+    },
     {
         key: "messageOnIncrease",
         data: {
             name: "Message on increase:",
             type: String,
             default: "The GM gave [$player] a [$bonusDie].",
+            scope: "world",
+            config: true,
+            restricted: true,
+        }
+    },
+    {
+        key: "showMsgDecrease",
+        data: {
+            name: "Mostrar mensagem ao REMOVER dado?",
+            type: Boolean,
+            default: true,
             scope: "world",
             config: true,
             restricted: true,
@@ -69,11 +105,33 @@ const SETTINGS = [
         }
     },
     {
+        key: "showMsgUse",
+        data: {
+            name: "Mostrar mensagem (Rolagem) ao USAR?",
+            type: Boolean,
+            default: true,
+            scope: "world",
+            config: true,
+            restricted: true,
+        }
+    },
+    {
         key: "messageOnUse",
         data: {
             name: "Message on use:",
             type: String,
             default: "[$player] has used a [$bonusDie].",
+            scope: "world",
+            config: true,
+            restricted: true,
+        }
+    },
+    {
+        key: "showMsgGift",
+        data: {
+            name: "Mostrar mensagem ao DOAR?",
+            type: Boolean,
+            default: true,
             scope: "world",
             config: true,
             restricted: true,

@@ -1,43 +1,54 @@
-# Bonus Die
-![downloads](https://img.shields.io/github/downloads/HadaIonut/Foundry-BonusDie/v1.0.0/bonusDie.zip?style=for-the-badge)
-![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2FBonusDie&colorB=4aa94a&style=for-the-badge)
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A32J9GM)
+Com certeza! Um README bem escrito é essencial para que outros usuários entendam o que mudou no seu fork e como usar as novas funcionalidades.
 
-Bonus Die is a Foundry VTT module that allows the GM to give players 'Bonus Dice' that can be expended at will or traded by the players.
-Expending a bonus die will trigger a chat message. This messages are costumizable and feature keywords that will be automaticly replaced.
+Aqui está uma sugestão completa para o seu arquivo README.md, mantendo a estrutura original, mas adicionando os créditos de fork, as novas configurações e a compatibilidade com a V13.
 
-## Instalation
+Você pode copiar e colar o texto abaixo:
 
-This module can be installed from the Foundry VTT module browser or installed from the `module.json` file available in the latest release
+Bonus Die (V13 Fork)
+Compatibilidade: Foundry VTT v13+
 
-## Usage
+Este é um fork do módulo original Bonus Die criado por HadaIonut, atualizado e modernizado para funcionar nativamente no Foundry VTT V13.
 
-This module adds the dungeon master the option to gift the players a Bonus Die. 
-Bonus Dice is a costumizable resource whose utilization should be decided by the game master.
+O que é?
+O Bonus Die permite ao Mestre (GM) dar aos jogadores "Dados Bônus" que podem ser gastos à vontade ou trocados entre os jogadores. Gastar um dado bônus dispara uma mensagem no chat e, nesta versão, rola um dado 3D real.
 
-### Interface
+As mensagens são totalmente personalizáveis e utilizam palavras-chave que são substituídas automaticamente.
 
-*GM side*
+✨ Novidades neste Fork (v1.0.3+)
+Além da compatibilidade total com a V13 (sem depender de jQuery ou Hooks antigos), este fork adiciona:
 
-![img](https://i.imgur.com/2jjj9EL.png)
+🎲 Rolagem 3D Real: Agora, ao usar um dado bônus, o sistema realmente rola um dado (ex: 1d6, 1d8) no chat, em vez de apenas enviar um texto.
 
-In order from left to right: 
- - the 0s represend the players courent number of Bonus Dice
- - the + button adds to the player 1 bonus die
- - the - button removes one bonus die from the player
+⚙️ Fórmula Configurável: Escolha qual dado será rolado nas configurações (d6, d8, d20, etc.).
 
-*Player side*
+🔇 Controle de Mensagens: Opções para ocultar mensagens específicas (ex: esconder o aviso quando o GM remove um dado, mas manter quando o jogador ganha).
 
-![img](https://i.imgur.com/p4wZnl4.png)
+⚡ Performance: Código reescrito usando MutationObserver e ES Modules para maior estabilidade na interface da V13.
 
-- the dice icon next to the player 2 is the use button, it removes one bonus die from the user and creates a chat message to notify everyone about this (in the future this button will also expose a hook in case anyone wants to make a macro that will trigger on hook or something)
-- the gift icon next to player 3 is the gift button, it offers players the option to gift bonus dice to one another, it will also create a chat message to notify eveyone about this
+Instalação
+Como este é um fork não oficial na lista principal (ainda), você deve instalar usando o link do manifesto:
 
+No Foundry, vá na aba Add-on Modules.
 
-## Keywords
+Clique em Install Module.
 
-The complete list of keywords that are replaced is:
- - [$player] - will be replaced by the name of the player that has triggered the message
- - [$otherPlayer] - will be replaced by the target of an action (example in the default message of gifting a bonus die it is replaced by the recipient of the gift)
- - [$bonusDie] - will be replaced by the name of the bonus dice (configurable in the settings tab)
- 
+No campo "Manifest URL", cole o link: https://raw.githubusercontent.com/banidoXD/Foundry-BonusDie/master/module.json
+
+Clique em Install.
+
+Configuração e Palavras-Chave
+Você pode alterar todas as mensagens e comportamentos no menu Configure Settings do módulo.
+
+Lista de Palavras-Chave (Keywords)
+Estas tags serão substituídas automaticamente nas mensagens de chat:
+
+[$player] - Nome do jogador que disparou a ação.
+
+[$targetPlayer] - Nome do alvo da ação (ex: quem recebeu o presente).
+
+[$bonusDie] - Nome do dado bônus (configurável, ex: "Inspiração", "Dado da Sorte").
+
+Créditos
+Autor Original: HadaIonut
+
+Fork V13 & Novas Features: banidoXD

@@ -1,23 +1,32 @@
 {
-  "name": "BonusDie",
-  "title": "Bonus Die",
-  "description": "This module offers the option for the GM to give their players a number of 'Bonus Dice' that can be expended or gifted to other players",
-  "author": "banidoXD",
-  "version": "1.0.3",
-  "compatibility": {
-    "minimum": "13",
-    "verified": "13"
-  },
-  "esmodules": [
-    "scripts/Hooks.js",
-    "scripts/main.js"
-  ],
-  "styles": [
-    "styles/BonusDice.css"
-  ],
-  "socket": true,
-  "url": "https://github.com/banidoXD/Foundry-BonusDie",
-  "manifest": "https://raw.githubusercontent.com/banidoXD/Foundry-BonusDie/master/module.json",
-  "download": "https://github.com/banidoXD/Foundry-BonusDie/archive/refs/heads/master.zip",
-  "changelog": ""
+    "id": "BonusDie",
+    "title": "Bonus Die",
+    "description": "This module offers the option for the GM to give their players a number of 'Bonus Dice' that can be expended or gifted to other players",
+    "authors": [
+        {
+            "name": "banidoXD"
+        },
+        {
+            "name": "HadaIoan",
+            "flags": {
+                "role": "Original Author"
+            }
+        }
+    ],
+    "url": "https://github.com/banidoXD/Foundry-BonusDie",
+    "version": "1.0.3",
+    "compatibility": {
+        "minimum": "13",
+        "verified": "13"
+    },
+    "esmodules": [
+        "scripts/Hooks.js",
+        "scripts/main.js"
+    ],
+    "styles": [
+        "styles/BonusDice.css"
+    ],
+    "socket": true,
+    "manifest": "https://raw.githubusercontent.com/banidoXD/Foundry-BonusDie/master/module.json",
+    "download": "https://github.com/banidoXD/Foundry-BonusDie/archive/refs/heads/master.zip"
 }

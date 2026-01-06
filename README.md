@@ -1,9 +1,3 @@
-Com certeza! Um README bem escrito é essencial para que outros usuários entendam o que mudou no seu fork e como usar as novas funcionalidades.
-
-Aqui está uma sugestão completa para o seu arquivo README.md, mantendo a estrutura original, mas adicionando os créditos de fork, as novas configurações e a compatibilidade com a V13.
-
-Você pode copiar e colar o texto abaixo:
-
 Bonus Die (V13 Fork)
 Compatibilidade: Foundry VTT v13+
 
